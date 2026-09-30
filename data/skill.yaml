@@ -1,0 +1,27 @@
+﻿# 填真实素材后再改为 true；开启后会实际提交并删除测试技能。
+enabled: true
+
+# 上传时读取项目内的素材，不会修改或重新压缩 ZIP。
+package_file: "test_files/skills/ui-defect-analyzer.zip"
+# 已确认与案例封面共用 ip.png，作为本次测试的技能图标。
+icon_file: "test_files/images/ip.png"
+
+# 审核最多等待多少秒、每隔多少秒查一次。超时会失败并清理测试技能。
+review_timeout_seconds: 60
+poll_interval_seconds: 3
+
+# 填这个 ZIP 里应存在的真实文件路径，用来验证公开的包内容。
+# 按当前 ZIP 内的路径填写。服务端是否去掉顶层目录，仍需首次联调确认。
+expected_files:
+  - "SKILL.md"
+
+submit_data:
+  # 留空时自动上传本地文件并填入；填写已有资产标识则直接复用。
+  iconAssetKey: ""
+  packageAssetKey: ""
+  version: "1.0.0"
+  displayName: "接口自动化测试技能"
+  description: "用于验证技能提交和审核流程的测试数据"
+  category: "TESTING"
+  developerSignature: "接口自动化测试"
+  contactEmail: "287509645@qq.com"

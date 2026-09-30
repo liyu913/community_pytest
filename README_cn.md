@@ -1,53 +1,65 @@
-# Community
+﻿# 社区接口自动化测试
 
-[English](README.md) | [简体中文](README_cn.md)
+基于 pytest、requests 和 Allure，测试环境为 https://developer-dev.d-robotics.cc。
+接口文档：https://developer-dev.d-robotics.cc/swagger-ui/index.html#/
 
-欢迎来到 Community 项目仓库。
-不包括a隐私泄露b等文件和内容。
+## 项目结构
 
-本仓库目前处于初始化阶段。中英文 README 为后续补充项目目标、资源和贡献流程提供基础。
+- api/login_api.py：登录和查询当前用户。
+- api/case_api.py：创建、发布、查询和删除案例。
+- api/skill_api.py：提交技能、查询审核与公开文件、删除技能。
+- api/asset_api.py：申请上传凭证、上传图片和技能 ZIP。
+- common/request_client.py：公共请求、Bearer 认证、日志与报告附件。
+- config/config.yaml：测试环境和公共登录账号。
+- data/login.yaml：登录成功和失败场景。
+- data/case.yaml、data/skill.yaml：发布流程的数据、素材路径和执行开关。
+- tests/：登录、用户查询、案例发布和技能发布用例。
+- utils/：YAML 读取、日志和通用断言工具。
+- conftest.py：准备带 Token 和不带 Token 的请求对象。
 
-## 项目状态
+## 安装与运行
 
-- 已提供英文和简体中文版本的基础文档。
-- 项目范围、具体实现和环境配置说明尚待确定。
-- 当前尚无可安装或运行的应用程序。
+在项目根目录执行：
 
-## 仓库结构
-
-```text
-community/
-├── README.md       # 英文说明
-└── README_cn.md    # 简体中文说明
+```powershell
+python -m pip install -r requirements.txt
+python -m pytest
 ```
 
-## 开始使用
+只检查用例能否收集，不向服务器发送请求：
 
-你可以选择熟悉的语言阅读说明。如果需要获取本地副本，请先安装 Git，再执行：
-
-```bash
-git clone https://github.com/liyu913/community.git
-cd community
+```powershell
+python -m pytest --collect-only
 ```
 
-待相关代码和环境要求确定后，再补充构建、安装与使用步骤。
+单独运行一个模块：
 
-## 参与贡献
+```powershell
+python -m pytest tests/test_login.py -v
+python -m pytest tests/test_current_user.py -v
+python -m pytest tests/test_case.py -v
+python -m pytest tests/test_skill.py -v
+```
 
-欢迎完善文档，也欢迎提出项目建设建议。
+本机可用解释器为 D:\yuuuu\python\python.exe，也可以使用它的完整路径运行上述命令。
 
-1. 阅读已有文件，以及相关 Issue 或 Pull Request。
-2. 对于较大的改动建议，先提交 Issue，说明问题、建议方案和预期效果。
-3. Fork 本仓库，并为改动创建分支。
-4. 保持改动范围明确；涉及共同信息时，同步更新中英文 README。
-5. 提交 Pull Request，说明修改内容和检查方式。
+## 发布流程配置
 
-请勿在贡献内容中包含密码、访问令牌或私人信息。
+案例和技能用例分别读取 data/case.yaml、data/skill.yaml。
+当 enabled 为 false 时跳过该流程；填好素材并改为 true 后才实际执行。
+开启后会上传文件并创建测试内容，流程结束时删除本次创建的案例或技能。
 
-## 问题反馈
+案例流程：上传封面 → 创建草稿 → 发布 → 作者和公开详情校验 → 清理。
+技能流程：上传图标及 ZIP → 提交 → 等待审核 → 公开详情及文件校验 → 清理。
+技能审核等待时长和查询间隔在 data/skill.yaml 中配置。
 
-如发现文档问题或有改进建议，请通过仓库的 [Issues](https://github.com/liyu913/community/issues) 反馈。请提供必要背景；涉及可复现的问题时，请附上复现步骤。
+## 日志和报告
 
-## 许可证
+日志位于 logs/。当前请求封装会记录完整请求和响应，日志可能包含账号密码和 Token，请勿直接分享。
 
-仓库暂未添加许可证。代码和内容的使用授权范围将在发布许可证后明确。
+```powershell
+python run.py
+allure serve reports/allure-results
+```
+
+run.py 会运行 pytest 并生成 Allure 结果；查看报告需要安装 Allure CLI。

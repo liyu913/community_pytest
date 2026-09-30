@@ -1,0 +1,20 @@
+﻿# 填真实素材后再改为 true；开启后会实际创建、发布并删除测试案例。
+enabled: true
+
+# 用例运行时会上传这张图片，不需要手动填写 coverAssetKey。
+# 路径从项目根目录开始写，换电脑后也不需要修改用户名和盘符。
+cover_file: "test_files/images/ip.png"
+
+# 已确认测试仓库内容可以按发布页面的开源许可发布。
+accepted_open_source_license: true
+
+create_data:
+  projectName: "接口自动化测试案例"
+  projectSummary: "用于验证案例发布流程的测试数据"
+  # 大模型应用对应编号 1，已通过社区公开案例接口核对。
+  categoryCodes: [1]
+  # RDK X5 对应编号 2，已通过社区公开案例接口核对。
+  platformCodes: [2]
+  repositoryUrl: "https://github.com/liyu913/test"
+  # 通常留空，运行时自动上传封面并填入；填写已有标识则复用，不重新上传。
+  coverAssetKey: ""
